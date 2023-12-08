@@ -4,9 +4,11 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -44,6 +46,17 @@ public class StandAloneTest {
 		boolean match = cartProducts.stream().anyMatch(cartp->cartp.getText().equalsIgnoreCase(productName));
 		Assert.assertTrue(match);	
 		driver.findElement(By.cssSelector(".totalRow button")).click();
+		
+		Actions a = new Actions(driver);
+		a.sendKeys(driver.findElement(By.cssSelector("[placeholder='Select Country']")), "India").build().perform();		
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".ta-results")));
+		driver.findElement(By.cssSelector(".ta-item:nth-of-type(2)")).click();
+		JavascriptExecutor js =(JavascriptExecutor)driver;
+		js.executeScript("window.scrollBy(0,500)");
+		driver.findElement(By.cssSelector(".action__submit")).click();
+		String confermMsg = driver.findElement(By.cssSelector(".hero-primary")).getText();
+		Assert.assertTrue(confermMsg.equalsIgnoreCase("THANKYOU FOR THE ORDER."));
+		driver.close();
 		
 
 	}
