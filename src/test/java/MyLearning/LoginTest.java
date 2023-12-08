@@ -16,7 +16,7 @@ import org.testng.Assert;
 import MyLearning.pageObject.LandingPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class StandAloneTest {
+public class LoginTest {
 
 	public static void main(String[] args) {
 		WebDriverManager.chromedriver().setup();
@@ -26,10 +26,10 @@ public class StandAloneTest {
 		WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(5));
 		
 		String productName = "ZARA COAT 3";
-		driver.get("https://rahulshettyacademy.com/client/");
-		driver.findElement(By.id("userEmail")).sendKeys("amitkr@gmail.com");
-		driver.findElement(By.id("userPassword")).sendKeys("Passwork@007");
-		driver.findElement(By.id("login")).click();
+	
+		LandingPage login = new LandingPage(driver);
+		login.goTo();
+		login.loginApplication("amitkr@gmail.com", "Passwork@007");
 		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".mb-3")));	
 		List<WebElement> products = driver.findElements(By.cssSelector(".mb-3"));
